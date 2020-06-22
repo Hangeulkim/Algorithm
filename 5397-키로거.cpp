@@ -1,6 +1,4 @@
-#include<iostream>
-#include<string>
-#include<stack>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -11,14 +9,38 @@ int main(){
 
     int testcase;
     cin>>testcase;
-    string input,ans="";
-    while(testcase--){
-        cin>>input;
-        for(int i=0;i<input.length();i++){
-            switch(input[i]){
 
+    while(testcase--){
+        string input;
+        cin>>input;
+        int leng=input.length();
+        list<char> ans;
+        auto iter=ans.begin();
+        for(int i=0;i<leng;i++){
+            switch(input[i]){
+                case '<':
+                    if(iter!=ans.begin())
+                        iter--;
+                    break;
+                case '>':
+                    if(iter!=ans.end())
+                        iter++;
+                    break;
+                case '-':
+                    if(iter!=ans.begin()){
+                        iter=ans.erase(--iter);
+                    }
+                    break;
+                default :
+                    ans.insert(iter,input[i]);
+                    break;
             }
         }
+        for(auto idx : ans){
+            cout<<idx;
+        }
+        cout<<'\n';
+        ans.clear();
     }
 
     return 0;
