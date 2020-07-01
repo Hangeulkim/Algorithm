@@ -1,26 +1,42 @@
-#include<cstdio>
-#include<cmath>
+#include<bits/stdc++.h>
+
+using namespace std;
+int N;
+int M;
+bool gojang[11];
+int min_num=987654321;
+
+void dfs(string input){
+    for (int i = 0; i < 10; i++) {
+        if(!gojang[i]){
+            string tmp=input+to_string(i);
+
+            min_num=min(min_num,abs(N-stoi(tmp))+(int)tmp.length());
+
+            if(tmp.length()<=6){
+                dfs(tmp);
+            }
+        }
+    }
+}
 
 int main(){
-    int N=0,M=0,a[10];
-    char innum=0;
-    for(int i=0;i<10;i++) a[i]=1;
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int tmp;
     cin>>N>>M;
+    min_num=min(min_num,abs(100-N));
 
     for(int i=0;i<M;i++){
-        cin>>innum;
-        a[innum]=0;
+        cin>>tmp;
+        gojang[tmp]=true;
     }
 
-    int ch=abs(N-100),num=0,max=0;
-    for(int i=0;i<10;i++)
-        if(a[i]&&max<i) max=i;
-
-    while(ch!=0){
-        cnt++;
-
-    }
-    cout<<cnt<<'\n';
+    if(M<10)
+        dfs("");
+    cout<<min_num;
 
     return 0;
 }
