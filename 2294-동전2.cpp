@@ -23,6 +23,7 @@ int main(){
     for(int i=1;i<=k;i++){
         dp[i]=987654321;
         for(int j=0;j<sz;j++){
+            if(i<input[j])
                 break;
             dp[i]=min(dp[i],dp[i-input[j]]+1);
         }
