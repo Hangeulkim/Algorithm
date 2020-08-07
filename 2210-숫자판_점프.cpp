@@ -52,9 +52,6 @@ int main(){
             dfs(y,x,input[y][x],1);
         }
     }
-    for(int i=0;i<result.size();i++){
-        cout<<result[i]<<'\n';
-    }
     cout<<result.size()<<'\n';
 
     return 0;
