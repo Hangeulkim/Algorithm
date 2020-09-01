@@ -1,5 +1,7 @@
 # Algorithm
-<pre>6/22
+<pre>
+2020
+6/22
 acm craft- 위상 정렬의 한 파트 공부
 무한_수열 - dp의 살짝 응용
 키로거 - 자료구조 list사용 erase와 insert는 n^2이다.
