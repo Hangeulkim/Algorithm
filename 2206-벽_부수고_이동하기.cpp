@@ -9,15 +9,18 @@ typedef struct St{
     int fire;
 }st;
 
+int my[4]={0,1,0,-1};
+int mx[4]={1,0,-1,0};
+
 string tmp;
 vector<string> input;
 int N,M;
 queue<st> bfs_arr;
-int chk[1001][1001][2]={0,};
+int chk[2][1001][1001];
 
 void bfs(){
     bfs_arr.push({0,0,1,0});
-    chk[0][0][0]=1;
+    chk[0][0][0]=true;
 
     while(!bfs_arr.empty()){
         int tmp_y=bfs_arr.front().y;
@@ -28,63 +31,28 @@ void bfs(){
         if(tmp_y==N-1&&
             tmp_x==M-1) break;
 
-
-        if(tmp_y+1<N){
-            if(input[tmp_y+1][tmp_x]=='1'&&!chk[tmp_y+1][tmp_x][1]){
-                if(!tmp_fire){
-                    bfs_arr.push({tmp_y+1,tmp_x,tmp_cnt+1,1});
-                    chk[tmp_y+1][tmp_x][1]=1;
-                }
-            }
-            else if(!chk[tmp_y+1][tmp_x][tmp_fire]){
-                bfs_arr.push({tmp_y+1,tmp_x,tmp_cnt+1,tmp_fire});
-                chk[tmp_y+1][tmp_x][tmp_fire]=1;
-            }
-        }
-
-        if(tmp_y-1>=0){
-            if(input[tmp_y-1][tmp_x]=='1'&&!chk[tmp_y-1][tmp_x][1]){
-                if(!tmp_fire){
-                    bfs_arr.push({tmp_y-1,tmp_x,tmp_cnt+1,1});
-                    chk[tmp_y-1][tmp_x][1]=1;
-                }
-            }
-            else if(!chk[tmp_y-1][tmp_x][tmp_fire]){
-                bfs_arr.push({tmp_y-1,tmp_x,tmp_cnt+1,tmp_fire});
-                chk[tmp_y-1][tmp_x][tmp_fire]=1;
-            }
-        }
-
-
-        if(tmp_x+1<M){
-            if(input[tmp_y][tmp_x+1]=='1'&&!chk[tmp_y][tmp_x+1][1]){
-                if(!tmp_fire){
-                    bfs_arr.push({tmp_y,tmp_x+1,tmp_cnt+1,1});
-                    chk[tmp_y][tmp_x+1][1]=1;
-                }
-            }
-            else if(!chk[tmp_y][tmp_x+1][tmp_fire]){
-                bfs_arr.push({tmp_y,tmp_x+1,tmp_cnt+1,tmp_fire});
-                chk[tmp_y][tmp_x+1][tmp_fire]=1;
-            }
-        }
-
-
-        if(tmp_x-1>=0){
-            if(input[tmp_y][tmp_x-1]=='1'&&!chk[tmp_y][tmp_x-1][1]){
-                if(!tmp_fire){
-                    bfs_arr.push({tmp_y,tmp_x-1,tmp_cnt+1,1});
-                    chk[tmp_y][tmp_x-1][1]=1;
-                }
-            }
-            else if(!chk[tmp_y][tmp_x-1][tmp_fire]){
-                bfs_arr.push({tmp_y,tmp_x-1,tmp_cnt+1,tmp_fire});
-                chk[tmp_y][tmp_x-1][tmp_fire]=1;
-            }
-        }
-
-
         bfs_arr.pop();
+
+
+        for(int i=0;i<4;i++){
+            int ny=tmp_y+my[i];
+            int nx=tmp_x+mx[i];
+
+            if(ny<0||nx<0||ny>=N||nx>=M||chk[tmp_fire][ny][nx])
+                continue;
+            if(input[ny][nx]=='1'){
+                if(tmp_fire)
+                    continue;
+                chk[1][ny][nx]=true;
+                bfs_arr.push({ny,nx,tmp_cnt+1,1});
+            }
+            else{
+                bfs_arr.push({ny,nx,tmp_cnt+1,tmp_fire});
+                chk[tmp_fire][ny][nx]=true;
+                if(tmp_fire==0)
+                    chk[1][ny][nx]=true;
+            }
+        }
     }
 
 }
@@ -94,6 +62,7 @@ int main(){
     cin.tie(0);
     cout.tie(0);
 
+    memset(chk,false,sizeof(chk));
     cin>>N>>M;
 
     for(int i=0;i<N;i++){
