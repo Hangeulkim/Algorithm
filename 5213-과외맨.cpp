@@ -6,7 +6,7 @@ int input[502][1002];
 int blk[502][1002];
 int chk[255002];
 int N;
-int ans=-1;
+int ans=1;
 int my[4]={0,1,0,-1};
 int mx[4]={1,0,-1,0};
 vector<int> path[255002];
