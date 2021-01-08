@@ -14,7 +14,8 @@ int main(){
   cin>>input;
 
   for(int cnt=4;cnt<=input;cnt++){
-    if(cnt%3==0) dp[cnt]=min(dp[cnt/3],dp[cnt-1])+1;
+      if(cnt%6==0) dp[cnt]=min(min(dp[cnt/2],dp[cnt/3]),dp[cnt-1])+1;
+    else if(cnt%3==0) dp[cnt]=min(dp[cnt/3],dp[cnt-1])+1;
     else if(cnt%2==0) dp[cnt]=min(dp[cnt/2],dp[cnt-1])+1;
     else dp[cnt]=dp[cnt-1]+1;
   }

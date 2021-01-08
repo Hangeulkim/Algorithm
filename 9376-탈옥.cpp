@@ -3,11 +3,11 @@
 using namespace std;
 
 int h,w,T;
-char input[101][101];
+char input[102][102];
 vector<pair<int, int> > where;
 int my[4]={1,-1,0,0};
 int mx[4]={0,0,1,-1};
-int dist[3][101][101];
+int dist[3][102][102];
 
 void bfs(){
     for(int i=0;i<3;i++){
@@ -69,6 +69,7 @@ int main(){
                 if(input[i][j]=='*') continue;
                 int sum=dist[0][i][j]+dist[1][i][j]+dist[2][i][j];
                 if(input[i][j]=='#') sum-=2;
+                if(sum<0) continue;
                 result=min(result,sum);
             }
         }
