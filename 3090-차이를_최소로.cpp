@@ -15,18 +15,18 @@ bool bs(long long mid){
     chk.assign(input.begin(),input.end());
 
     for(int i=0;i<N-1;i++){
-        tmp=chk[i]-chk[i+1];
+        tmp=chk[i+1]-chk[i];
         if(tmp>mid){
             cnt+=tmp-mid;
-            chk[i]=chk[i+1]+mid;
+            chk[i+1]=chk[i]+mid;
         }
     }
 
-    for(int i=1;i<N;i++){
-        tmp=chk[i]-chk[i-1];
+    for(int i=N-1;i>0;i--){
+        tmp=chk[i-1]-chk[i];
         if(tmp>mid){
             cnt+=tmp-mid;
-            chk[i]=chk[i-1]+mid;
+            chk[i-1]=chk[i]+mid;
         }
     }
 
