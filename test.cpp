@@ -1,61 +1,63 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int N,K,tmp,tmp1;
-vector<int> cutting;
-vector<int> input;
-int sum=0;
-
-bool all_chk(int num){
-    for(auto it : cutting){
-        if(it==num) return false;
-    }
-    return true;
+void swap(char **arr, int idx1, int idx2) {
+   char *s;
+   s = (char *)malloc(sizeof(char) * 51);
+   strcpy(s, arr[idx1]);
+   strcpy(arr[idx1], arr[idx2]);
+   strcpy(arr[idx2], s);
+   free(s);
 }
 
-void find(){
-    int l=1,r=1;
-    int max_l,max_r=0;
-    int max_num=0;
-    for(l=1;l<=N-1;l++){
-        for(r=l+1;r<=N;r++){
-            int tmp=input[r]-input[l];
-            if(max_num<tmp&&all_chk(r)){
-                max_l=l;
-                max_r=r;
-                max_num=tmp;
-            }
-        }
-    }
-    cutting.push_back(max_r);
+int part(char **arr, int left, int right) {
+   char *pivot = arr[left];
+   int low = left + 1;
+   int high = right;
+
+   while (low <= high) {
+      while (strlen(pivot) >= strlen(arr[low]) && low <= right)
+            low++;
+
+      while (strlen(pivot) <= strlen(arr[high]) && high >= left + 1)
+            high--;
+
+      if (low <= high)
+         swap(arr, low, high);
+   }
+
+   swap(arr, left, high);
+   return high;
+
 }
 
-int main() {
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+void quicksort(char **arr, int left, int right) {
+   if (left <= right) {
+      int pivot = part(arr, left, right);
+      quicksort(arr, left, pivot - 1);
+      quicksort(arr, pivot + 1, right);
+   }
+}
 
-	cin>>N>>K;
-    input.push_back(0);
+int main(void) {
+   int N;
+   char **words;
 
-	for(int i=1;i<=N;i++){
-		cin>>tmp;
-		input.push_back(tmp);
-	}
+   scanf("%d", &N);
+   words = (char **)malloc(sizeof(char*)*N);
+   for (int i = 0; i < N; i++) {
+      words[i] = (char *)malloc(sizeof(char) * 51);
+      scanf("%s", words[i]);
+   }
 
-    K-=1;
-    while(K--){
-        find();
-        sort(cutting.begin(),cutting.end());
-    }
-    cutting.push_back(N);
+   quicksort(words, 0, N - 1);
 
-    tmp=1;
-    for(int i=0;i<cutting.size()-1;i++){
-        sum+=input[cutting[i]]-input[tmp];
-        tmp=cutting[i]+1;
-    }
-    cout<<sum;
+   for (int i = 0; i < N; i++) {
+      printf("%s\n", words[i]);
+      free(words[i]);
+   }
 
-	return 0;
+
+   return 0;
 }
