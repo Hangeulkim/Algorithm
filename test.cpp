@@ -1,63 +1,165 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<bits/stdc++.h>
 
-void swap(char **arr, int idx1, int idx2) {
-   char *s;
-   s = (char *)malloc(sizeof(char) * 51);
-   strcpy(s, arr[idx1]);
-   strcpy(arr[idx1], arr[idx2]);
-   strcpy(arr[idx2], s);
-   free(s);
+using namespace std;
+
+int N;
+int a[11][11];
+int sy,sx;
+
+typedef struct Dat{
+    int y;
+    int x;
+    int mal;
+    int t;
+};
+
+queue<Dat> dat;
+
+int knight[8][2]={
+    {2,-1},
+    {2,1},
+    {-2,1},
+    {-2,-1},
+    {1,2},
+    {1,-2},
+    {-1,2},
+    {-1,-2}    
+};
+
+int bishop[4][2]={
+    {1.1},
+    {1,-1},
+    {-1,1},
+    {-1,-1}
+};
+
+int rook[4][2]={
+    {1,0},
+    {0,1},
+    {-1,0},
+    {0,-1}
+};
+
+bool chk[111][11][11][3];
+
+int bfs(){
+    dat.push({sy,sx,0,0});
+    dat.push({sy,sx,1,0});
+    dat.push({sy,sx,2,0});
+
+    chk[0][0][0][0]=true;
+    chk[0][0][0][1]=true;
+    chk[0][0][0][2]=true;
+
+    while(!dat.empty()){
+        int y=dat.front().y;
+        int x=dat.front().x;
+        int mal=dat.front().mal;
+        int t=dat.front().t;
+        int num=a[y][x];
+
+        dat.pop();
+
+        if(num==N*N)
+            return t;
+
+        int ny,nx,nn;
+
+        for(int i=0;i<3;i++){
+            if(chk[num][y][x][mal])
+                continue;
+            dat.push({y,x,t+1});
+        }
+
+        if(mal==0){
+            for(int i=0;i<8;i++){
+                ny=y+knight[i][0];
+                nx=x+knight[i][1];
+
+                if(ny<0||ny>=N||nx<0||nx>=N)
+                    continue;
+
+                if(chk[num][ny][nx][mal])
+                    continue;
+
+                nn=a[ny][nx];
+                if(nn==num+1){
+                    dat.push({ny,nx,mal,t+1});
+                    chk[nn][ny][nx][mal]=true;
+                }
+                else{
+                    dat.push({ny,nx,mal,t+1});
+                    chk[num][ny][nx][mal]=true;
+                }
+                
+            }
+
+        }
+        
+        else if(mal==1){
+            for(int i=0;i<4;i++){
+                for(int j=0;;j++){
+                    ny=y+bishop[i][0];
+                    nx=x+bishop[i][1];
+                    if(ny<0||ny>=N||nx<0||nx>=N)
+                        break;
+
+                    if(chk[num][ny][nx][mal])
+                        continue;
+
+                    chk[num][ny][nx][mal]=true;
+                    nn=a[ny][nx];
+                    if(nn==num+1){
+                        dat.push({ny,nx,mal,t+1});
+                        chk[nn][ny][nx][mal]=true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        else{
+            for(int i=0;i<4;i++){
+                for(int j=0;;j++){
+                    ny=y+rook[i][0];
+                    nx=x+rook[i][1];
+                    if(ny<0||ny>=N||nx<0||nx>=N)
+                        break;
+
+                    if(chk[num][ny][nx][mal])
+                        continue;
+
+                    chk[num][ny][nx][mal]=true;
+                    nn=a[ny][nx];
+                    if(nn==num+1){
+                        dat.push({ny,nx,mal,t+1});
+                        chk[nn][ny][nx][mal]=true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return -1;
 }
 
-int part(char **arr, int left, int right) {
-   char *pivot = arr[left];
-   int low = left + 1;
-   int high = right;
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-   while (low <= high) {
-      while (strlen(pivot) >= strlen(arr[low]) && low <= right)
-            low++;
+    cin>>N;
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            cin>>a[i][j];
+            if(a[i][j]==1){
+                sy=i;
+                sx=j;
+            }
+        }
+    }
 
-      while (strlen(pivot) <= strlen(arr[high]) && high >= left + 1)
-            high--;
+    cout<<bfs()<<'\n';
 
-      if (low <= high)
-         swap(arr, low, high);
-   }
-
-   swap(arr, left, high);
-   return high;
-
-}
-
-void quicksort(char **arr, int left, int right) {
-   if (left <= right) {
-      int pivot = part(arr, left, right);
-      quicksort(arr, left, pivot - 1);
-      quicksort(arr, pivot + 1, right);
-   }
-}
-
-int main(void) {
-   int N;
-   char **words;
-
-   scanf("%d", &N);
-   words = (char **)malloc(sizeof(char*)*N);
-   for (int i = 0; i < N; i++) {
-      words[i] = (char *)malloc(sizeof(char) * 51);
-      scanf("%s", words[i]);
-   }
-
-   quicksort(words, 0, N - 1);
-
-   for (int i = 0; i < N; i++) {
-      printf("%s\n", words[i]);
-      free(words[i]);
-   }
-
-
-   return 0;
+    return 0;
 }
