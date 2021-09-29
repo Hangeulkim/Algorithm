@@ -4,12 +4,12 @@ using namespace std;
 
 int F,S,G,U,D;
 int result=-1;
-bool visit[2000001];
+bool chk[1000001];
 
 bool bfs(){
     queue<pair<int,int> > q;
     q.push({S,0});
-    visit[S]=true;
+    chk[S]=true;
     while(!q.empty()){
         int cnt=q.front().second;
         int stair=q.front().first;
@@ -22,13 +22,13 @@ bool bfs(){
         }
 
         int ns=stair+U;
-        if(!visit[ns]&&ns<=F){
-            visit[ns]=true;
+        if(ns<=F&&!chk[ns]){
+            chk[ns]=true;
             q.push({ns,cnt+1});
         }
         ns=stair-D;
-        if(!visit[ns]&&ns>=1){
-            visit[ns]=true;
+        if(ns>=1&&!chk[ns]){
+            chk[ns]=true;
             q.push({ns,cnt+1});
         }
     }
@@ -40,7 +40,7 @@ int main(){
     cin.tie(0);
     cout.tie(0);
 
-    memset(visit,false,sizeof(visit));
+    memset(chk,false,sizeof(chk));
     cin>>F>>S>>G>>U>>D;
     if(bfs())
         cout<<result;
