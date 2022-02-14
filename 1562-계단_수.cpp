@@ -24,7 +24,7 @@ int main()
     {
         for (int j = 0; j < 10; j++)
         {
-            for (int k = 0; k < all; k++)
+            for (int k = 0; k <= all; k++)
             {
                 if (j == 0)
                     dp[i][0][k | (1 << 0)] = (dp[i][0][k | (1 << 0)] + dp[i - 1][1][k]) % mod;
