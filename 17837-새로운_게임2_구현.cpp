@@ -17,6 +17,28 @@ int mx[5]={0,1,-1,0,0};
 
 int N,K;
 
+void mv_white(deque<int> dq, int y, int x){
+    while(!dq.empty()){
+        int n=dq.front();
+        dq.pop_front();
+
+        m[y][x].push_back(n);
+        wh[n].y=y;
+        wh[n].x=x;
+    }
+}
+
+void mv_red(deque<int> dq, int y, int x){
+    while(!dq.empty()){
+        int n=dq.back();
+        dq.pop_back();
+
+        m[y][x].push_back(n);
+        wh[n].y=y;
+        wh[n].x=x;
+    }
+}
+
 bool mv(){
     for(int i=0;i<K;i++){
         int y=wh[i].y;
@@ -51,55 +73,20 @@ bool mv(){
                 ny=y;
                 nx=x;
 
-                while(!dq.empty()){
-                    int n=dq.front();
-                    dq.pop_front();
-
-                    m[ny][nx].push_back(n);
-                    wh[n].y=ny;
-                    wh[n].x=nx;
-                }
+                mv_white(dq,ny,nx);
             }
             else if(color[ny][nx]==0){//ÆÄ¶û -> ÇÏ¾ç
-                while(!dq.empty()){
-                    int n=dq.front();
-                    dq.pop_front();
-
-                    m[ny][nx].push_back(n);
-                    wh[n].y=ny;
-                    wh[n].x=nx;
-                }
+                mv_white(dq,ny,nx);
             }
             else if(color[ny][nx]==1){//ÆÄ¶û -> »¡°­
-                while(!dq.empty()){
-                    int n=dq.back();
-                    dq.pop_back();
-
-                    m[ny][nx].push_back(n);
-                    wh[n].y=ny;
-                    wh[n].x=nx;
-                }
+                mv_red(dq,ny,nx);
             }
         }
         else if(color[ny][nx]==0){//ÇÏ¾ç
-            while(!dq.empty()){
-                int n=dq.front();
-                dq.pop_front();
-
-                m[ny][nx].push_back(n);
-                wh[n].y=ny;
-                wh[n].x=nx;
-            }
+            mv_white(dq,ny,nx);
         }
         else if(color[ny][nx]==1){//»¡°­
-            while(!dq.empty()){
-                int n=dq.back();
-                dq.pop_back();
-
-                m[ny][nx].push_back(n);
-                wh[n].y=ny;
-                wh[n].x=nx;
-            }
+            mv_red(dq,ny,nx);
         }
         
 
