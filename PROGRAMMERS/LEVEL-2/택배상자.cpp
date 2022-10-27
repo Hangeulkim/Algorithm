@@ -14,7 +14,7 @@ int calc(vector<int> order){
         int num=order[i];
         
         //못꺼내는 경우 = 보조컨테이너에서 꺼낼수 없는 놈 or 컨테이너 맨 앞에 있는 경우
-        if(idx>num&&s.top()!=num){
+        if(!s.empty()&&s.top()>num){
             break;
         }
         
