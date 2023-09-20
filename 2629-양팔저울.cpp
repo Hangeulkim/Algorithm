@@ -34,7 +34,7 @@ void solution(){
     while(t--){
         cin>>chk;
 
-        if(chk < 15000 && dp[N][chk])
+        if(chk <= 15000 && dp[N][chk])
             cout<<"Y ";
         else
             cout<<"N ";
