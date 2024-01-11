@@ -21,11 +21,11 @@ public:
 
         // use k like stack point
         for(int i=0;i<sz;++i){
-            int now = nums[i];
-            int know = nums[k];
-            if(now != know){
-                
+            if(nums[i] > nums[k]){
+                nums[++k] = nums[i];
             }
         }
+
+        return k+1;
     }
 };
