@@ -29,6 +29,14 @@ int squares(int a, int b)
     return cnt;
 }
 
+int squares2(int a, int b)
+{
+    int minn = ceil(sqrt(a));
+    int maxn = floor(sqrt(b));
+
+    return maxn - minn + 1;
+}
+
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
